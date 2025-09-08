@@ -1,5 +1,10 @@
 import Mailgen from "mailgen";
 import nodemailer from "nodemailer";
+import dotenv from "dotenv";                
+dotenv.config({
+    path: "./.env",
+});
+
 
 const sendEmail= async (option) => {
    const mailGenerator= new Mailgen(
@@ -15,11 +20,11 @@ const sendEmail= async (option) => {
     const emailHtml = mailGenerator.generate(option.mailgenContent)
 
     const transporter = nodemailer.createTransport({
-        host:MAILTRAP_SMTP_HOST ,
-        port:MAILTRAP_SMTP_PORT,
+        host: process.env.MAILTRAP_SMTP_HOST,
+        port: process.env.MAILTRAP_SMTP_PORT,
         auth: {
-            user:MAILTRAP_SMTP_USER,
-            pass:MAILTRAP_SMTP_PASS 
+            user: process.env.MAILTRAP_SMTP_USER,
+            pass: process.env.MAILTRAP_SMTP_PASS 
         }
     });
     const mail = {
@@ -40,7 +45,7 @@ const emailVerificationMailgenContent = (username, verificationUrl) => {
     return {
         body: {
             name: username,
-            intro: 'Welcome ! We\'re very excited to have you on board.',
+            intro: 'Welcome! We\'re very excited to have you on board.',
             action: {
                 instructions: 'To get started with us, please click here:',
                 button: {
